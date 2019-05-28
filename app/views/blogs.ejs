@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
+
+<div style="position:fixed;right:0px;margin:10px;z-index: 9;">
+    <button class="uk-button uk-button-primary" onclick="window.open('blog','_self')">NEW POST</button>
+    <button class="uk-button uk-button-secondary">LOGOUT</button>
+</div>
+<div class="uk-padding-large" style="padding-top:100px">
+    <% data.forEach(function(blog){ %>
+    <div class="uk-margin uk-card uk-card-body uk-card-default" onclick="window.open('/blog/<%- blog.id %>','_self')">
+        <h3 class="uk-card-title"><%-blog.title%></h3>
+        <p><%-blog.subtitle%></p>
+    </div>
+    <% }); %>
+</div>
+<script>
+
+</script>

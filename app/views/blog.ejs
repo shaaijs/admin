@@ -1,0 +1,84 @@
+<div style="position:fixed;right:0px;margin:10px">
+    <button class="uk-button uk-button-secondary">LOGOUT</button>
+</div>
+
+<form class="uk-form-stacked uk-padding-large">
+    <div class="uk-margin <%- id?'':'uk-hidden' %>">
+        <label class="uk-form-label" for="id">ID</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="id" type="text" value="<%- id %>" disabled>
+        </div>
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label" for="title">Title</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="title" type="text" value="<%- data.title %>" placeholder="What shaai is?">
+        </div>
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label" for="title">Subtitle</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="subtitle" type="text" value="<%- data.subtitle %>" placeholder="A Pluggable blog to ease your life">
+        </div>
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label" for="title">Author</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="author" type="text" value="<%- data.author %>" placeholder="Kay">
+        </div>
+    </div>
+
+    <div id="editor">
+        <%- data.content %>
+    </div>
+
+    <p uk-margin>
+        <button id="submitButton" class="uk-button uk-button-primary uk-button-large">SAVE</button>
+    </p>
+</form>
+
+<!-- Froala Editor -->
+<link href='https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.2/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.2/js/froala_editor.min.js'></script>
+<!-- UI Kit Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/blog.css">
+
+
+<script>
+    let form = {};
+    let blogId = document.getElementById('id').value
+    window.onload = () => {
+        let froalaEditor = new FroalaEditor('#editor', {
+            // toolbarInline: true,
+            toolbarButtons: [['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'], ['fontFamily', 'fontSize', 'textColor', 'backgroundColor'], ['inlineClass', 'inlineStyle', 'clearFormatting']],
+            charCounterCount: true,
+            // toolbarVisibleWithoutSelection: true
+        });
+
+        document.getElementById("submitButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            form.content = froalaEditor.html.get(true);
+            form.title = document.getElementById('title').value;
+            form.subtitle = document.getElementById('subtitle').value;
+            form.author = document.getElementById('author').value;
+            console.log(form);
+            fetch(`/blog/${blogId || ''}`, {
+                method: blogId ? 'put' : 'post',
+                body: JSON.stringify(form),
+                headers: new Headers({ 'content-type': 'application/json' }),
+            }).then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                if (res.data._id && !blogId) {
+                    blogId = res.data._id;
+                    document.getElementById('id').value = blogId;
+                    window.history.replaceState(null, null, `/blog/${blogId}`);
+                }
+            });
+        });
+    }
+</script>

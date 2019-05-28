@@ -1,0 +1,33 @@
+<!-- UI Kit Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
+
+
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh">
+    <h1>Shaai dashboard</h1>
+    <form style="width:400px;">
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <input class="uk-input" id="author" type="text" placeholder="Username">
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <input class="uk-input" id="author" type="text" placeholder="Password">
+            </div>
+        </div>
+
+        <% if(pageType == 'signup'){ %>
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <input class="uk-input" id="author" type="text" placeholder="Confirm password">
+            </div>
+        </div>
+        <% }%>
+
+        <p class="uk-margin">
+            <button id="submitButton" class="uk-button uk-button-primary" style="width:100%"><%- pageType %></button>
+        </p>
+    </form>
+</div>
