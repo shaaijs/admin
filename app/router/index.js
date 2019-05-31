@@ -14,7 +14,7 @@ router.get('/blogs', async function (req, res, next) {
 
 router.get('/api/blogs', async function (req, res, next) {
   const data = await blogsController.getAll()
-  res.json({ data });
+  res.json(data);
 });
 
 router.get('/blog/:id?', async function (req, res, next) {
