@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost/shaai', { useNewUrlParser: true });
+const DB_URI = process.env.DB_URI || 'mongodb://localhost/shaai'
+mongoose.connect(DB_URI, { useNewUrlParser: true });
 
 var conn = mongoose.connection;
 
