@@ -7,5 +7,6 @@ module.exports = new Schema({
     subtitle: { type: String, required: true },
     publishedDate: { type: String },
     author: { type: String, required: true },
+    userId: { type: String, required: true },
     modified: { type: Date, default: Date.now }
 });

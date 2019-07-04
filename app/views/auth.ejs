@@ -4,24 +4,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
 
 
-<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
     <h1>Shaai dashboard</h1>
     <form style="width:400px;">
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <input class="uk-input" id="author" type="text" placeholder="Username">
+                <input id="input-field-username" class="uk-input" id="author" type="text" placeholder="Username">
             </div>
         </div>
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <input class="uk-input" id="author" type="text" placeholder="Password">
+                <input id="input-field-password" class="uk-input" id="author" type="password" placeholder="Password">
             </div>
         </div>
 
         <% if(pageType == 'signup'){ %>
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <input class="uk-input" id="author" type="text" placeholder="Confirm password">
+                <input id="input-field-confirm-username" class="uk-input" id="author" type="password" placeholder="Confirm password">
             </div>
         </div>
         <% }%>
@@ -31,3 +31,35 @@
         </p>
     </form>
 </div>
+
+<script>
+    window.onload = (ev => {
+        const submitButton = document.getElementById('submitButton')
+        submitButton.onclick = (ev => {
+            ev.preventDefault()
+            const username = document.getElementById('input-field-username')
+            const password = document.getElementById('input-field-password')
+            const confirmUsername = document.getElementById('input-field-confirm-username')
+
+            if (confirmUsername && confirmUsername.value != password.value)
+                return alert('password mismatch')
+            fetch(`/${confirmUsername ? 'signup' : 'login'}`, {
+                method: 'post',
+                body: JSON.stringify({
+                    username: username.value,
+                    password: password.value
+                }),
+                headers: new Headers({ 'content-type': 'application/json' }),
+            }).then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                if (res.data) {
+                    window.open(`/blogs/${res.data.blogCode}`, '_self');
+                    localStorage.setItem('userToken', res.data.userToken)
+                    localStorage.setItem('blogCode', res.data.blogCode)
+                }
+            });
+        })
+    })
+
+</script>

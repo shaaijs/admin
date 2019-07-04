@@ -61,14 +61,14 @@
 
         document.getElementById("submitButton").addEventListener("click", function (event) {
             event.preventDefault();
+            const userToken = localStorage.getItem('userToken')
             form.content = froalaEditor.html.get(true);
             form.title = document.getElementById('title').value;
             form.subtitle = document.getElementById('subtitle').value;
             form.author = document.getElementById('author').value;
-            console.log(form);
             fetch(`/blog/${blogId || ''}`, {
                 method: blogId ? 'put' : 'post',
-                body: JSON.stringify(form),
+                body: JSON.stringify({ form, userToken }),
                 headers: new Headers({ 'content-type': 'application/json' }),
             }).then(function (response) {
                 return response.json();
