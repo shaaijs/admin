@@ -34,6 +34,9 @@
 
 <script>
     window.onload = (ev => {
+        let blogCode = localStorage.getItem('blogCode')
+        if (blogCode)
+            window.open(`/blogs/${blogCode}`, '_self');
         const submitButton = document.getElementById('submitButton')
         submitButton.onclick = (ev => {
             ev.preventDefault()

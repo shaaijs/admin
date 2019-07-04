@@ -1,5 +1,5 @@
 <div style="position:fixed;right:0px;margin:10px">
-    <button class="uk-button uk-button-secondary">LOGOUT</button>
+    <button class="uk-button uk-button-secondary" id="logout-btn">LOGOUT</button>
 </div>
 
 <form class="uk-form-stacked uk-padding-large">
@@ -58,6 +58,11 @@
             charCounterCount: true,
             // toolbarVisibleWithoutSelection: true
         });
+
+        document.getElementById("logout-btn").onclick = ev => {
+            localStorage.clear();
+            window.open('/', '_self')
+        }
 
         document.getElementById("submitButton").addEventListener("click", function (event) {
             event.preventDefault();
