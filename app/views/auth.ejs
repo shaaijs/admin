@@ -29,6 +29,11 @@
         <p class="uk-margin">
             <button id="submitButton" class="uk-button uk-button-primary" style="width:100%"><%- pageType %></button>
         </p>
+        
+        <% if(pageType == 'signup'){ %>
+            <a href="/signup">Don't have a account yet? Signup</a>
+        <% }%>
+          
     </form>
 </div>
 
