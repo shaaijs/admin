@@ -1,3 +1,6 @@
+<head>
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+</head>
 <div style="position:fixed;right:0px;margin:10px">
     <button class="uk-button uk-button-secondary" id="logout-btn">LOGOUT</button>
 </div>
@@ -52,12 +55,16 @@
     let form = {};
     let blogId = document.getElementById('id').value
     window.onload = () => {
-        let froalaEditor = new FroalaEditor('#editor', {
-            // toolbarInline: true,
-            toolbarButtons: [['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'], ['fontFamily', 'fontSize', 'textColor', 'backgroundColor'], ['inlineClass', 'inlineStyle', 'clearFormatting']],
-            charCounterCount: true,
-            // toolbarVisibleWithoutSelection: true
-        });
+        let CKeditor;
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                CKeditor = editor
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
         document.getElementById("logout-btn").onclick = ev => {
             localStorage.clear();
@@ -67,7 +74,7 @@
         document.getElementById("submitButton").addEventListener("click", function (event) {
             event.preventDefault();
             const userToken = localStorage.getItem('userToken')
-            form.content = froalaEditor.html.get(true);
+            form.content = CKeditor.getData();
             form.title = document.getElementById('title').value;
             form.subtitle = document.getElementById('subtitle').value;
             form.author = document.getElementById('author').value;
