@@ -1,11 +1,22 @@
 <head>
     <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
+    <style>
+        body, .title {
+            font-family: 'Karla', sans-serif
+        }
+    </style>
 </head>
 <div style="position:fixed;right:0px;margin:10px">
     <button class="uk-button uk-button-secondary" id="logout-btn">LOGOUT</button>
 </div>
-
 <form class="uk-form-stacked uk-padding-large">
+    <% if(data.title){ %>
+        <h3 class="title"><%- data.title %></h3>
+    <% }%>
+    <% if(!data.title){ %>
+        <h3 class="title">New post</h3>
+    <% }%> 
     <div class="uk-margin <%- id?'':'uk-hidden' %>">
         <label class="uk-form-label" for="id">ID</label>
         <div class="uk-form-controls">
@@ -15,13 +26,13 @@
     <div class="uk-margin">
         <label class="uk-form-label" for="title">Title</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="title" type="text" value="<%- data.title %>" placeholder="What shaai is?">
+            <input class="uk-input" id="title" type="text" value="<%- data.title %>" placeholder="Shaai is beautiful">
         </div>
     </div>
     <div class="uk-margin">
         <label class="uk-form-label" for="title">Subtitle</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="subtitle" type="text" value="<%- data.subtitle %>" placeholder="A Pluggable blog to ease your life">
+            <input class="uk-input" id="subtitle" type="text" value="<%- data.subtitle %>" placeholder="A pluggable blog to ease your life">
         </div>
     </div>
     <div class="uk-margin">
@@ -37,6 +48,7 @@
 
     <p uk-margin>
         <button id="submitButton" class="uk-button uk-button-primary uk-button-large">SAVE</button>
+        <span style="margin-left: 10px" id="saveStatus"></span>
     </p>
 </form>
 
@@ -60,7 +72,6 @@
             .create(document.querySelector('#editor'))
             .then(editor => {
                 CKeditor = editor
-                console.log(editor);
             })
             .catch(error => {
                 console.error(error);
@@ -70,9 +81,12 @@
             localStorage.clear();
             window.open('/', '_self')
         }
+        let submitButton = document.getElementById("submitButton")
+        let saveStatus = document.getElementById("saveStatus")
 
-        document.getElementById("submitButton").addEventListener("click", function (event) {
+        submitButton.addEventListener("click", function (event) {
             event.preventDefault();
+            saveStatus.innerHTML = 'SAVING...'
             const userToken = localStorage.getItem('userToken')
             form.content = CKeditor.getData();
             form.title = document.getElementById('title').value;
@@ -85,10 +99,11 @@
             }).then(function (response) {
                 return response.json();
             }).then(function (res) {
+                saveStatus.innerHTML = 'SAVED'
                 if (res.data._id && !blogId) {
                     blogId = res.data._id;
                     document.getElementById('id').value = blogId;
-                    window.history.replaceState(null, null, `/blog/${blogId}`);
+                    window.location = `/blog/${blogId}`
                 }
             });
         });

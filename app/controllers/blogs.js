@@ -14,14 +14,14 @@ module.exports = {
         const user = await User.findOne({ userToken })
         if (!user) return { success: false }
         blog['userId'] = user._id
-        await Blog.create(blog)
-        return { success: true }
+        const b = await Blog.create(blog)
+        return { success: true, ...b._doc }
     },
     edit: async (userToken, blogId, blog) => {
         const user = await User.findOne({ userToken })
         if (!user) return { success: false }
-        await Blog.findByIdAndUpdate(blogId, blog)
-        return { success: true }
+        const b = await Blog.findByIdAndUpdate(blogId, blog)
+        return { success: true, ...b._doc }
     },
     remove: async (blogId) => {
         return await Blog.findByIdAndRemove(blogId)

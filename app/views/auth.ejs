@@ -1,11 +1,19 @@
 <!-- UI Kit Library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css" />
+<link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
-
+<style>
+body {
+    font-family: 'Karla', sans-serif
+}
+.login-title {
+    font-family: 'Karla', sans-serif
+}
+</style>
 
 <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
-    <h1>Shaai dashboard</h1>
+    <h1 class="login-title">Shaai - Login</h1>
     <form style="width:400px;">
         <div class="uk-margin">
             <div class="uk-form-controls">
@@ -27,11 +35,11 @@
         <% }%>
 
         <p class="uk-margin">
-            <button id="submitButton" class="uk-button uk-button-primary" style="width:100%"><%- pageType %></button>
+            <button id="submitButton" class="uk-button uk-button-primary" style="margin: auto;display:block;width:50%"><%- pageType %></button>
         </p>
         
         <% if(pageType == 'login'){ %>
-            <a href="/signup">Don't have a account yet? Signup</a>
+            <p style="text-align: center; width: 100%"><a href="/signup">Don't have an account yet? Signup.</a></p>
         <% }%>
           
     </form>
