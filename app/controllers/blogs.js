@@ -24,6 +24,8 @@ module.exports = {
         return { success: true, ...b._doc }
     },
     remove: async (blogId) => {
-        return await Blog.findByIdAndRemove(blogId)
+        return await Blog.findByIdAndRemove(blogId).then(async (blog) => {
+            return await User.findById(blog.userId)
+        })
     }
 }

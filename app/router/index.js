@@ -26,9 +26,10 @@ router.get('/blog/:id?', async function (req, res, next) {
 });
 
 router.delete('/blog/:id', async function (req, res, next) {
-  await blogsController.remove(req.params.id)
+  const data = await blogsController.remove(req.params.id)
   res.json({
-    success: true
+    success: true,
+    blogCode: data.blogCode
   });
 });
 

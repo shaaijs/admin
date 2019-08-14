@@ -47,8 +47,11 @@
     </div>
 
     <p uk-margin>
-        <button id="submitButton" class="uk-button uk-button-primary uk-button-large">SAVE</button>
-        <span style="margin-left: 10px" id="saveStatus"></span>
+        <div style="display: flex">
+            <button style="margin-right: 10px" id="submitButton" class="uk-button uk-button-primary">SAVE</button>
+            <button id="deleteButton" class="uk-button uk-button-danger">DELETE</button>
+        </div>
+        <span id="saveStatus"></span>
     </p>
 </form>
 
@@ -65,8 +68,9 @@
 
 <script>
     let form = {};
-    let blogId = document.getElementById('id').value
+    let blogId
     window.onload = () => {
+        blogId = document.getElementById('id').value
         let CKeditor;
         ClassicEditor
             .create(document.querySelector('#editor'))
@@ -105,7 +109,29 @@
                     document.getElementById('id').value = blogId;
                     window.location = `/blog/${blogId}`
                 }
+            }).catch(() => {
+                saveStatus.innerHTML = 'FAILED TO SAVE'
             });
         });
+
+        let deleteButton = document.getElementById('deleteButton')
+        deleteButton.addEventListener('click', (e) => {
+            e.preventDefault()
+            saveStatus.innerHTML = 'DELETING...'
+            fetch(`/blog/${blogId}`, {
+                method: 'delete',
+                headers: new Headers({ 'content-type': 'application/json' }),
+            }).then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    saveStatus.innerHTML = 'DELETED'
+                    window.location = `/blogs/${res.blogCode}`
+                } else {
+                    saveStatus.innerHTML = 'FAILED TO DELETE'
+                }
+            }).catch(() => {
+                saveStatus.innerHTML = 'FAILED TO DELETE'
+            })
+        })
     }
 </script>
