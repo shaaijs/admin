@@ -8,7 +8,11 @@ module.exports = {
         return await Blog.find({ userId: user._id }, { userId: 0 }).limit(limit)
     },
     get: async (blogId) => {
-        return await Blog.findById(blogId)
+        return await Blog.findById(blogId).then(async blog => {
+            let user = await User.findById(blog.userId)
+            let { userId, ...rest } = blog._doc
+            return { ...rest, user }
+        })
     },
     create: async (userToken, blog) => {
         const user = await User.findOne({ userToken })

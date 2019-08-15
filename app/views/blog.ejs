@@ -5,12 +5,25 @@
         body, .title {
             font-family: 'Karla', sans-serif
         }
+        .title {
+            margin-top: 0;
+        }
+        #goBack {
+            transition: color 200ms ease-in-out;
+            margin: 0;
+            font-size: 20px;
+        }
+        #goBack:hover {
+            color: cornflowerblue;
+            cursor: pointer;
+        }
     </style>
 </head>
 <div style="position:fixed;right:0px;margin:10px">
     <button class="uk-button uk-button-secondary" id="logout-btn">LOGOUT</button>
 </div>
 <form class="uk-form-stacked uk-padding-large">
+    <p id="goBack">← Go back</p>
     <% if(data.title){ %>
         <h3 class="title"><%- data.title %></h3>
     <% }%>
@@ -69,6 +82,7 @@
 <script>
     let form = {};
     let blogId
+    let blogCode = '<%= data.user.blogCode %>'
     window.onload = () => {
         blogId = document.getElementById('id').value
         let CKeditor;
@@ -132,6 +146,12 @@
             }).catch(() => {
                 saveStatus.innerHTML = 'FAILED TO DELETE'
             })
+        })
+
+        let goBack = document.getElementById('goBack')
+        goBack.addEventListener('click', (e) => {
+            e.preventDefault()
+            window.location.href = `/blogs/${blogCode}`
         })
     }
 </script>
