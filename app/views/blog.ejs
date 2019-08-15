@@ -82,7 +82,6 @@
 <script>
     let form = {};
     let blogId
-    let blogCode = '<%= data.user.blogCode %>'
     window.onload = () => {
         blogId = document.getElementById('id').value
         let CKeditor;
@@ -151,7 +150,7 @@
         let goBack = document.getElementById('goBack')
         goBack.addEventListener('click', (e) => {
             e.preventDefault()
-            window.location.href = `/blogs/${blogCode}`
+            window.history.back()
         })
     }
 </script>
