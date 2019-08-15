@@ -9,9 +9,11 @@ module.exports = {
     },
     get: async (blogId) => {
         return await Blog.findById(blogId).then(async blog => {
-            let user = await User.findById(blog.userId)
-            let { userId, ...rest } = blog._doc
-            return { ...rest, user }
+            if(blog) {
+                let user = await User.findById(blog.userId)
+                let { userId, ...rest } = blog._doc
+                return { ...rest, user }
+            } else return { success: false }
         })
     },
     create: async (userToken, blog) => {
@@ -29,6 +31,7 @@ module.exports = {
     },
     remove: async (blogId) => {
         return await Blog.findByIdAndRemove(blogId).then(async (blog) => {
+            if(!blog) return { success: false }
             return await User.findById(blog.userId)
         })
     }
