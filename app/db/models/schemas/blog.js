@@ -8,5 +8,7 @@ module.exports = new Schema({
     publishedDate: { type: String },
     author: { type: String, required: true },
     userId: { type: String, required: true },
+    publicUrl: { type: String },
+    coverImage: { type: String },
     modified: { type: Date, default: Date.now }
 });

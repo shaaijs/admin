@@ -55,6 +55,13 @@
         </div>
     </div>
 
+    <div class="uk-margin">
+        <label class="uk-form-label" for="title">Cover Image URL</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="coverImage" type="text" value="<%- data.coverImage %>" placeholder="Image URL">
+        </div>
+    </div>
+
     <div id="editor">
         <%- data.content %>
     </div>
@@ -80,8 +87,11 @@
 
 
 <script>
+    let url = '<%= JSON.stringify(data.user) %>'
+    console.log('hey', url)
     let form = {};
     let blogId
+    let blogCode = '<%= data.user && data.user.blogCode %>'
     window.onload = () => {
         blogId = document.getElementById('id').value
         let CKeditor;
@@ -109,6 +119,7 @@
             form.title = document.getElementById('title').value;
             form.subtitle = document.getElementById('subtitle').value;
             form.author = document.getElementById('author').value;
+            form.coverImage = document.getElementById('coverImage').value;
             fetch(`/blog/${blogId || ''}`, {
                 method: blogId ? 'put' : 'post',
                 body: JSON.stringify({ form, userToken }),
@@ -150,7 +161,11 @@
         let goBack = document.getElementById('goBack')
         goBack.addEventListener('click', (e) => {
             e.preventDefault()
-            window.history.back()
+            if(blogCode) {
+                window.location.href = `/blogs/${blogCode}`
+            } else {
+                window.history.back()
+            }
         })
     }
 </script>

@@ -1,5 +1,6 @@
 const Blog = require('./../db/models/blog')
 const User = require('./../db/models/user')
+const urlGenerator = require('./../utils/urlGenerator')
 
 module.exports = {
     getAll: async (blogCode, limit) => {
@@ -21,7 +22,9 @@ module.exports = {
         if (!user) return { success: false }
         blog['userId'] = user._id
         const b = await Blog.create(blog)
-        return { success: true, ...b._doc }
+        const url = urlGenerator(b._id, b._doc.title)
+        const updatedBlog = await Blog.findByIdAndUpdate(b._id, { publicUrl: url }, { new: true })
+        return { success: true, ...updatedBlog }
     },
     edit: async (userToken, blogId, blog) => {
         const user = await User.findOne({ userToken })
