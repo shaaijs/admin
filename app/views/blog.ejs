@@ -95,13 +95,13 @@
     let blogCode = '<%= data.user && data.user.blogCode %>'
     window.onload = () => {
         blogId = document.getElementById('id').value
-        CKEDITOR.config.toolbar = [
-            { name: 'document', items: ['Source', '-', 'NewPage', 'Preview', '-', 'Templates'] },
-            { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'] },
-            // '/',
-            { name: 'basicstyles', items: ['Bold', 'Italic'] },
-            { name: 'coding', items: ['Code', 'Image', 'Iframe'] },
-        ];
+        // CKEDITOR.config.toolbar = [
+        //     { name: 'document', items: ['Source', '-', 'NewPage', 'Preview', '-', 'Templates'] },
+        //     { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'] },
+        //     // '/',
+        //     { name: 'basicstyles', items: ['Bold', 'Italic'] },
+        //     { name: 'coding', items: ['Code', 'Image', 'Iframe'] },
+        // ];
         CKEDITOR.replace('editor')
 
         document.getElementById("logout-btn").onclick = ev => {
