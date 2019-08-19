@@ -1,18 +1,23 @@
 <head>
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script> -->
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
     <style>
-        body, .title {
+        body,
+        .title {
             font-family: 'Karla', sans-serif
         }
+
         .title {
             margin-top: 0;
         }
+
         #goBack {
             transition: color 200ms ease-in-out;
             margin: 0;
             font-size: 20px;
         }
+
         #goBack:hover {
             color: cornflowerblue;
             cursor: pointer;
@@ -25,11 +30,11 @@
 <form class="uk-form-stacked uk-padding-large">
     <p id="goBack">← Go back</p>
     <% if(data.title){ %>
-        <h3 class="title"><%- data.title %></h3>
+    <h3 class="title"><%- data.title %></h3>
     <% }%>
     <% if(!data.title){ %>
-        <h3 class="title">New post</h3>
-    <% }%> 
+    <h3 class="title">New post</h3>
+    <% }%>
     <div class="uk-margin <%- id?'':'uk-hidden' %>">
         <label class="uk-form-label" for="id">ID</label>
         <div class="uk-form-controls">
@@ -75,9 +80,6 @@
     </p>
 </form>
 
-<!-- Froala Editor -->
-<link href='https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.2/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
-<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.2/js/froala_editor.min.js'></script>
 <!-- UI Kit Library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
@@ -88,21 +90,19 @@
 
 <script>
     let url = '<%= JSON.stringify(data.user) %>'
-    console.log('hey', url)
     let form = {};
     let blogId
     let blogCode = '<%= data.user && data.user.blogCode %>'
     window.onload = () => {
         blogId = document.getElementById('id').value
-        let CKeditor;
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then(editor => {
-                CKeditor = editor
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        CKEDITOR.config.toolbar = [
+            { name: 'document', items: ['Source', '-', 'NewPage', 'Preview', '-', 'Templates'] },
+            { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'] },
+            // '/',
+            { name: 'basicstyles', items: ['Bold', 'Italic'] },
+            { name: 'coding', items: ['Code', 'Image', 'Iframe'] },
+        ];
+        CKEDITOR.replace('editor')
 
         document.getElementById("logout-btn").onclick = ev => {
             localStorage.clear();
@@ -115,7 +115,7 @@
             event.preventDefault();
             saveStatus.innerHTML = 'SAVING...'
             const userToken = localStorage.getItem('userToken')
-            form.content = CKeditor.getData();
+            form.content = CKEDITOR.instances.editor.getData();
             form.title = document.getElementById('title').value;
             form.subtitle = document.getElementById('subtitle').value;
             form.author = document.getElementById('author').value;
@@ -146,22 +146,22 @@
                 method: 'delete',
                 headers: new Headers({ 'content-type': 'application/json' }),
             }).then(res => res.json())
-            .then(res => {
-                if(res.success) {
-                    saveStatus.innerHTML = 'DELETED'
-                    window.location = `/blogs/${res.blogCode}`
-                } else {
+                .then(res => {
+                    if (res.success) {
+                        saveStatus.innerHTML = 'DELETED'
+                        window.location = `/blogs/${res.blogCode}`
+                    } else {
+                        saveStatus.innerHTML = 'FAILED TO DELETE'
+                    }
+                }).catch(() => {
                     saveStatus.innerHTML = 'FAILED TO DELETE'
-                }
-            }).catch(() => {
-                saveStatus.innerHTML = 'FAILED TO DELETE'
-            })
+                })
         })
 
         let goBack = document.getElementById('goBack')
         goBack.addEventListener('click', (e) => {
             e.preventDefault()
-            if(blogCode) {
+            if (blogCode) {
                 window.location.href = `/blogs/${blogCode}`
             } else {
                 window.history.back()
