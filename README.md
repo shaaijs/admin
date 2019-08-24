@@ -1,5 +1,4 @@
 # Shaai - Admin
-Manage your blogs at https://shaai.herokuapp.com
 
 ### Config Vars (.env)
 
