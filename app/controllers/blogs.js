@@ -6,11 +6,11 @@ module.exports = {
     getAll: async (blogCode, limit) => {
         const user = await User.findOne({ blogCode })
         if (!user) return { success: false }
-        return await Blog.find({ userId: user._id }, { userId: 0 }).limit(limit)
+        return await Blog.find({ userId: user._id }, { userId: 0 }).limit(limit).sort({ modified: -1 })
     },
     get: async (blogId) => {
         return await Blog.findById(blogId).then(async blog => {
-            if(blog) {
+            if (blog) {
                 let user = await User.findById(blog.userId)
                 let { userId, ...rest } = blog._doc
                 return { ...rest, user }
@@ -34,7 +34,7 @@ module.exports = {
     },
     remove: async (blogId) => {
         return await Blog.findByIdAndRemove(blogId).then(async (blog) => {
-            if(!blog) return { success: false }
+            if (!blog) return { success: false }
             return await User.findById(blog.userId)
         })
     }
