@@ -8,9 +8,6 @@ DB_URI = mongodb+srv://<username>:<password>@<domain>/<dbName>
 
 ### Host shaai admin on heroku
 
-- Fork this repository.
-- Go to [heroku dashboard](https://dashboard.heroku.com)
-- Create a new app.
-- Conenct GitHub to heroku.
-- Deploy this project.
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/shaaijs/admin)
+
 - Go to `settings -> config` vars, and add your `DB_URI`.
