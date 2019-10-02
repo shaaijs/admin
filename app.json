@@ -1,0 +1,7 @@
+{
+  "name": "Shaai Admin",
+  "description": "CMS for managing shaai on your website",
+  "repository": "https://github.com/shaaijs/admin",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "shaai", "blog", "cms"]
+}
